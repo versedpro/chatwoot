@@ -6,7 +6,7 @@ class Api::V1::Accounts::Conversations::AssignmentsController < Api::V1::Account
     
     @agents ||= Current.account.users.order_by_full_name
     
-    unless assignee == nil
+    if assignee != nil && assignee.account_users.first["limits"] != nil
       # Get the offset of current agent in agents list
       @index = @agents.pluck(:id).index(assignee["id"])
       Rails.logger.info "Assignment Offset: #{@index}"
