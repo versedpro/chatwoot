@@ -51,6 +51,9 @@ class Api::V1::Accounts::Conversations::AssignmentsController < Api::V1::Account
     next_conversation_count = ::Conversation.where(assignee_id: next_assignee["id"]).length
     Rails.logger.info "Next Conversation Count: #{next_conversation_count}"
     
+    # If next agent is admin, return.
+    return next_assignee if next_assignment_maximum == nil
+    # If next agent is not reached out maximum, return.
     return next_assignee if next_assignment_maximum > next_conversation_count
     assignee_next(assignment_maximum: next_assignment_maximum, conversation_count: next_conversation_count, assignee: next_assignee, index: next_index) unless assignment_maximum > conversation_count
   end
